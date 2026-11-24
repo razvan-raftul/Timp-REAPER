@@ -3,7 +3,7 @@ Timp REAPER
 Addon NVDA pentru REAPER, făcut pe 24 nov. 2026 la cererea lui Răzvan: când derulezi, NVDA spune unde ești în piesă, ca la un player, de exemplu „3 minute și 30 de secunde”.
 
 Folosire
-Control Shift Alt T, în REAPER: pornește sau oprește timpul spus la derulare (la pornirea REAPER e oprit). NVDA spune „Timpul la derulare pornit” sau „oprit”.
+Control Shift Alt T, în REAPER: pornește sau oprește timpul spus la derulare (la pornirea REAPER e pornit, cerut de Răzvan pe 24 nov.). NVDA spune „Timpul la derulare pornit” sau „oprit”.
 Control Shift Alt I, în REAPER: spune unde ești și cât durează piesa, de exemplu „Ești la 1 minut și 5 secunde din 3 minute și 30 de secunde”. Merge și când timpul la derulare e oprit.
 În alte programe tastele merg mai departe, ca de obicei. Scurtăturile se pot schimba din NVDA, Gesturi de intrare, categoria Timp REAPER.
 Dacă NVDA spune „Timp REAPER nu rulează. Repornește REAPER.”, scriptul nu e pornit în REAPER.

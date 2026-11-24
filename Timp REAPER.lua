@@ -1,7 +1,7 @@
 -- Timp REAPER
 -- Când derulezi (muți cursorul sau sari în piesă), îți spune unde ești: „3 minute și 30 de secunde”.
--- Pornește singur odată cu REAPER, dar tace până îl pornești cu Control Shift Alt T (prins de addonul
--- NVDA „Timp REAPER”). Control Shift Alt I spune oricând unde ești și cât durează piesa.
+-- Pornește singur odată cu REAPER și e activ; Control Shift Alt T (prins de addonul NVDA „Timp REAPER”)
+-- îl oprește și îl pornește. Control Shift Alt I spune oricând unde ești și cât durează piesa.
 -- Mesajele le citește addonul NVDA din fișierul de mai jos.
 
 local FISIER = (os.getenv("TEMP") or "C:\\Windows\\Temp") .. "\\reaper_timp.txt"
@@ -10,7 +10,7 @@ local LINISTE = 0.4         -- secunde fără altă săritură până spune locu
                             -- iar la tasta ținută locul se spune când o lași
 local SARITURA = 0.3        -- secunde: cât trebuie să sară cursorul ca să fie derulare, nu redare normală
 
-local activ = false
+local activ = true          -- pornit de la început (cerut de Răzvan)
 local ultima_comanda = nil
 local ultima_verificare = 0
 local poz_veche, timp_vechi, stare_veche = nil, nil, nil
