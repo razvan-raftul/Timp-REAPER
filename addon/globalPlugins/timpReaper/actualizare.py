@@ -106,9 +106,9 @@ def _intreaba():
 	try:
 		nume = _addon().manifest["summary"]
 	except Exception:
-		nume = "addonul"
+		nume = "Un addon"
 	raspuns = gui.messageBox(
-		"Am instalat varianta nouă pentru %s. Repornești NVDA acum? Dacă nu, intră în lucru la următoarea pornire." % nume,
+		"%s are o actualizare nouă. Dorești să repornești NVDA pentru a se actualiza?" % nume,
 		"Actualizare", wx.YES_NO | wx.ICON_QUESTION)
 	if raspuns == wx.YES:
 		core.restart()
