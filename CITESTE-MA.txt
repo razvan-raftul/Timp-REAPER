@@ -1,0 +1,17 @@
+Timp REAPER
+
+Addon NVDA pentru REAPER, făcut pe 24 nov. 2026 la cererea lui Răzvan: când derulezi, NVDA spune unde ești în piesă, ca la un player, de exemplu „3 minute și 30 de secunde”.
+
+Folosire
+Control Shift Alt T, în REAPER: pornește sau oprește timpul spus la derulare (la pornirea REAPER e oprit). NVDA spune „Timpul la derulare pornit” sau „oprit”.
+Control Shift Alt I, în REAPER: spune unde ești și cât durează piesa, de exemplu „Ești la 1 minut și 5 secunde din 3 minute și 30 de secunde”. Merge și când timpul la derulare e oprit.
+În alte programe tastele merg mai departe, ca de obicei. Scurtăturile se pot schimba din NVDA, Gesturi de intrare, categoria Timp REAPER.
+Dacă NVDA spune „Timp REAPER nu rulează. Repornește REAPER.”, scriptul nu e pornit în REAPER.
+
+Cum merge
+Timp REAPER.lua rulează în REAPER: urmărește cursorul de redare (cât se cântă) sau cursorul de editare (când e oprit). O săritură mai mare de 0,3 secunde în redare sau orice mutare cu redarea oprită înseamnă derulare; după 0,15 secunde fără altă săritură scrie locul în %TEMP%\reaper_timp.txt. La pornirea sau oprirea redării nu se spune nimic. Comenzile vin de la addon prin %TEMP%\reaper_timp_comanda.txt („comuta”, „info”).
+Addonul (globalPlugins\timpReaper) citește fișierul, oprește ce spunea NVDA înainte și spune locul nou. La pornirea NVDA pune scriptul din addon în REAPER (calea din __startup.lua; dacă nu e, în %APPDATA%\REAPER\Scripts, și îl adaugă la pornire). REAPER portabil nu e găsit.
+Dacă OSARA spune și el locul la mutarea cursorului, se pot auzi amândouă; Timp REAPER oprește vorbirea de dinainte.
+
+Actualizare automată
+Depozitul public github.com/razvan-raftul/Timp-REAPER (codul în addon/, scriptul în rădăcină, workflow în .github/workflows/build.yml, care verifică scriptul cu luac5.4 și pune addonul în release-ul „latest” cu versiunea 1.0.<numărul build-ului>). actualizare.py: la 20 de secunde după pornirea NVDA; NVDA spune doar procentul, cu bipurile de progres, apoi repornește.

@@ -1,0 +1,33 @@
+name: build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: build
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VER: 1.0.${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Addonul
+        run: |
+          sudo apt-get install -y -q lua5.4 > /dev/null
+          luac5.4 -p "Timp REAPER.lua"
+          cp "Timp REAPER.lua" addon/globalPlugins/timpReaper/
+          sed -i "s/^version = .*/version = $VER/" addon/manifest.ini
+          python3 -m compileall -q addon
+          find addon -name __pycache__ -prune -exec rm -rf {} +
+          (cd addon && zip -qr "../timpReaper.nvda-addon" .)
+          printf "%s" "$VER" > version.txt
+      - name: Publicare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest "timpReaper.nvda-addon" version.txt --title "Timp REAPER $VER" --notes "Versiunea $VER. Apasă Enter pe timpReaper.nvda-addon ca să-l instalezi; după aceea se actualizează singur la pornirea NVDA."
