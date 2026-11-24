@@ -35,8 +35,8 @@ def citeste():
 
 
 def pune_scriptul_in_reaper():
-	"""Pune scriptul din addon peste cel folosit de REAPER, ca după o actualizare REAPER să aibă varianta nouă.
-	Caută în __startup.lua de unde pornește REAPER scriptul; dacă nu-l găsește, îl pune în Scripts și îl adaugă la pornire."""
+	"""Pune scriptul din addon în folderul Scripts al REAPER (mereu în același loc) și face ca __startup.lua să-l
+	pornească de acolo. O cale veche din __startup.lua (de exemplu un folder mutat sau șters) e înlocuită."""
 	try:
 		with open(SCRIPT_LUA, "rb") as f:
 			nou = f.read()
@@ -45,36 +45,39 @@ def pune_scriptul_in_reaper():
 	resurse = os.path.join(os.environ.get("APPDATA", ""), "REAPER")
 	if not os.path.isdir(resurse):
 		return                                     # REAPER nu e instalat (sau e portabil)
-	startup = os.path.join(resurse, "Scripts", "__startup.lua")
+	scripturi = os.path.join(resurse, "Scripts")
+	cale = os.path.join(scripturi, "Timp REAPER.lua")
+	try:
+		os.makedirs(scripturi, exist_ok=True)
+		vechi = None
+		if os.path.exists(cale):
+			with open(cale, "rb") as f:
+				vechi = f.read()
+		if vechi != nou:
+			with open(cale, "wb") as f:
+				f.write(nou)
+	except OSError as e:
+		log.error("Timp REAPER: nu am putut scrie %s: %s" % (cale, e))
+		return
+	startup = os.path.join(scripturi, "__startup.lua")
 	try:
 		with open(startup, encoding="utf-8", errors="replace") as f:
 			continut = f.read()
 	except OSError:
 		continut = ""
-	cai = [c for c in re.findall(r"\[\[([^\]]*Timp REAPER[^\]]*\.lua)\]\]", continut) if c]
-	if not cai:
-		cale = os.path.join(resurse, "Scripts", "Timp REAPER.lua")
-		cai = [cale]
+	tipar = r"\[\[[^\]]*Timp REAPER[^\]]*\.lua\]\]"
+	if re.search(tipar, continut):
+		schimbat = re.sub(tipar, lambda m: "[[" + cale + "]]", continut)
+	else:
+		schimbat = continut + ("\n-- Timp REAPER: spune timpul piesei la derulare\n"
+			"do local id = reaper.AddRemoveReaScript(true, 0, [[" + cale + "]], true)\n"
+			"if id and id ~= 0 then reaper.Main_OnCommand(id, 0) end end\n")
+	if schimbat != continut:
 		try:
-			os.makedirs(os.path.dirname(startup), exist_ok=True)
-			with open(startup, "a", encoding="utf-8") as f:
-				f.write("\n-- Timp REAPER: spune timpul piesei la derulare\n"
-					"do local id = reaper.AddRemoveReaScript(true, 0, [[" + cale + "]], true)\n"
-					"if id and id ~= 0 then reaper.Main_OnCommand(id, 0) end end\n")
+			with open(startup, "w", encoding="utf-8") as f:
+				f.write(schimbat)
 		except OSError as e:
 			log.error("Timp REAPER: __startup.lua: %s" % e)
-	for cale in cai:
-		try:
-			with open(cale, "rb") as f:
-				if f.read() == nou:
-					continue
-		except OSError:
-			pass
-		try:
-			with open(cale, "wb") as f:
-				f.write(nou)
-		except OSError as e:
-			log.error("Timp REAPER: nu am putut scrie %s: %s" % (cale, e))
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):

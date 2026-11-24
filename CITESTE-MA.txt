@@ -15,3 +15,4 @@ OSARA spune și el ceva la mutarea cursorului. Cerut de Răzvan: să nu se supra
 
 Actualizare automată
 Depozitul public github.com/razvan-raftul/Timp-REAPER (codul în addon/, scriptul în rădăcină, workflow în .github/workflows/build.yml, care verifică scriptul cu luac5.4 și pune addonul în release-ul „latest” cu versiunea 1.0.<numărul build-ului>). actualizare.py: la 20 de secunde după pornirea NVDA; NVDA spune doar procentul, cu bipurile de progres, apoi repornește.
+- Din 24 nov. 2026: addonul ține scriptul mereu în %APPDATA%\REAPER\Scripts și schimbă în __startup.lua orice cale veche spre el (la Răzvan, calea veche era folderul Documents\Claude working\Distors REAPER, care nu mai există). Copia din folderul Claude working nu mai e folosită de REAPER.
