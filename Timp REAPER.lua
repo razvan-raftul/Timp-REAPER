@@ -6,7 +6,8 @@
 
 local FISIER = (os.getenv("TEMP") or "C:\\Windows\\Temp") .. "\\reaper_timp.txt"
 local FIS_COMANDA = (os.getenv("TEMP") or "C:\\Windows\\Temp") .. "\\reaper_timp_comanda.txt"
-local LINISTE = 0.15        -- secunde fără altă săritură până spune locul (la tasta ținută spune când o lași)
+local LINISTE = 0.4         -- secunde fără altă săritură până spune locul: OSARA apucă să spună întâi ce spune el,
+                            -- iar la tasta ținută locul se spune când o lași
 local SARITURA = 0.3        -- secunde: cât trebuie să sară cursorul ca să fie derulare, nu redare normală
 
 local activ = false

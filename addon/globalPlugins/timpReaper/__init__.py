@@ -11,7 +11,6 @@ import time
 import api
 import globalPluginHandler
 import queueHandler
-import speech
 import ui
 import wx
 from logHandler import log
@@ -98,8 +97,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 					queueHandler.queueFunction(queueHandler.eventQueue, self._spune, mesaj)
 
 	def _spune(self, mesaj):
-		speech.cancelSpeech()          # la derulare repetată se aude doar locul cel nou
-		ui.message(mesaj)
+		ui.message(mesaj)              # fără să oprească vorbirea: se spune după ce termină OSARA
 
 	def _comanda(self, gesture, ce):
 		try:
