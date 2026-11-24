@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Actualizarea automată a addonului: la pornirea NVDA (după 20 de secunde) citește version.txt din release-ul
 # „latest” de pe GitHub. Dacă e o versiune nouă, o descarcă și o instalează. NVDA spune doar procentul,
-# din 10 în 10, cu bipurile obișnuite de progres, apoi repornește ca addonul nou să intre în lucru.
+# din 10 în 10, cu bipurile obișnuite de progres, apoi te întreabă dacă repornești NVDA acum (addonul nou
+# intră în lucru după repornire).
 # Fără internet sau fără release, tace.
 
 import os
@@ -96,5 +97,18 @@ def _instaleaza(cale):
 		return
 	_bip(100)
 	ui.message("100 la sută")
+	wx.CallLater(1500, _intreaba)
+
+
+def _intreaba():
 	import core
-	wx.CallLater(2500, core.restart)
+	import gui
+	try:
+		nume = _addon().manifest["summary"]
+	except Exception:
+		nume = "addonul"
+	raspuns = gui.messageBox(
+		"Am instalat varianta nouă pentru %s. Repornești NVDA acum? Dacă nu, intră în lucru la următoarea pornire." % nume,
+		"Actualizare", wx.YES_NO | wx.ICON_QUESTION)
+	if raspuns == wx.YES:
+		core.restart()
